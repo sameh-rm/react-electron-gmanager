@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "module": "CommonJS",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "paths": {
+      "@ui/*": ["src/ui/*"],
+      "@api/*": ["src/api/*"],
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": ["src/**/*", "**/*.ts", "**/*.tsx", "@types/**/*"]
+}

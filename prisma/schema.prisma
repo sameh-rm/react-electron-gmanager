@@ -1,0 +1,164 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum IntervalType {
+  DAILY
+  MONTHLY
+  YEARLY
+}
+
+enum PaymentStatus {
+  PAID
+  UNPAID
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum PermissionOperation {
+  CAN_READ_ALL
+  CAN_CREATE
+  CAN_UPDATE
+  CAN_REMOVE
+  CAN_APPROVE
+}
+
+enum Models {
+  User
+  Member
+  Permission
+  Subscription
+  Transaction
+  Plan
+  Workout
+}
+
+model Permission {
+  id          Int                 @id @default(autoincrement())
+  title       String
+  describtion String
+  model       Models
+  operation   PermissionOperation
+  users       User[]
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@unique([title, model, operation])
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  fullName      String
+  address       String
+  phone         String
+  username      String         @unique
+  password      String?
+  permissions   Permission[]
+  role          Role           @default(USER)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  members       Member[]
+  subscriptions Subscription[]
+  transactions  Transaction[]
+  plans         Plan[]
+  workout       Workout[]
+}
+
+model Member {
+  id            Int            @id @default(autoincrement())
+  fullName      String
+  address       String
+  phone         String
+  weight        Float
+  height        Float
+  gender        Gender
+  subscriptions Subscription[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  userId        Int
+  user          User           @relation(fields: [userId], references: [id], onDelete: NoAction)
+}
+
+model Workout {
+  id          Int      @id @default(autoincrement())
+  title       String   @unique
+  describtion String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  plans       Plan[]
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: NoAction)
+}
+
+model Plan {
+  id            Int            @id @default(autoincrement())
+  title         String         @unique
+  describtion   String
+  price         Float
+  duration      Int
+  intervalType  IntervalType   @default(MONTHLY)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscriptions Subscription[]
+  workouts      Workout[]
+  userId        Int
+  user          User           @relation(fields: [userId], references: [id], onDelete: NoAction)
+}
+
+model Subscription {
+  id            Int           @id @default(autoincrement())
+  member        Member?       @relation(fields: [memberId], references: [id], onDelete: NoAction)
+  memberId      Int?
+  plan          Plan?         @relation(fields: [planId], references: [id], onDelete: NoAction)
+  planId        Int?
+  value         Float
+  paid          Float
+  paymentStatus PaymentStatus @default(UNPAID)
+  confirmed     Boolean       @default(false)
+  startsAt      DateTime
+  endsAt        DateTime
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  transactions  Transaction[]
+  userId        Int
+  user          User          @relation(fields: [userId], references: [id], onDelete: NoAction)
+}
+
+model Transaction {
+  id             Int             @id @default(autoincrement())
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  Subscription   Subscription?   @relation(fields: [subscriptionId], references: [id], onDelete: NoAction)
+  subscriptionId Int?
+  value          Float
+  type           TransactionType
+  description    String
+  userId         Int
+  user           User            @relation(fields: [userId], references: [id], onDelete: NoAction)
+  confirmed      Boolean         @default(false)
+}
