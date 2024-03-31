@@ -19,4 +19,5 @@ export const mainConfig: Configuration = {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
     plugins: [new TsconfigPathsPlugin({/* options: see below */})]
   },
+  externals:["bcrypt"]
 };

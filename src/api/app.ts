@@ -8,34 +8,25 @@ import bodyParser from "body-parser";
 import { IController } from "@api/interfaces/IController";
 import UserController from "@api/controllers/users.controller";
 import errorMiddleware from "@api/middlewares/error.middleware";
-import { loggingMiddleware } from "./middlewares/logger.middleware";
-import MemberController from "./controllers/members.controller";
-import PlanController from "./controllers/plans.controller";
-import WorkoutController from "./controllers/workouts.controller";
-import TransactionController from "./controllers/transactions.controller";
-import SubscriptionController from "./controllers/subscriptions.controller";
-import PermissionController from "./controllers/permissions.controller";
-import { Server } from "socket.io";
-import { createServer } from "http";
-import { wsAuthenticationMiddleware } from "./middlewares/authentication.middleware";
+import { loggingMiddleware } from "@api/middlewares/logger.middleware";
+import MemberController from "@api/controllers/members.controller";
+import PlanController from "@api/controllers/plans.controller";
+import WorkoutController from "@api/controllers/workouts.controller";
+import TransactionController from "@api/controllers/transactions.controller";
+import SubscriptionController from "@api/controllers/subscriptions.controller";
+import PermissionController from "@api/controllers/permissions.controller";
 
 class App {
   private port: number;
   private app: express.Application;
-  private io: Server;
 
-  private httpServer: ReturnType<typeof createServer>;
 
   constructor(controllers: IController<unknown>[], port: number) {
     this.port = port;
     this.app = express();
-    this.httpServer = createServer(this.app);
-    this.io = new Server(this.httpServer);
     this.initMiddlewares();
     this.initControllers(controllers);
     this.initializeErrorHandling();
-    wsAuthenticationMiddleware(this.io);
-    // this.initSockets();
   }
 
   private initMiddlewares() {
@@ -57,16 +48,11 @@ class App {
   }
 
   public listen() {
-    this.httpServer.listen(this.port, () => {
+    this.app.listen(this.port, () => {
       console.log(`App listening on port ${this.port}`);
     });
   }
 
-  public initSockets(){
-    this.io.on('connection', (...params) => {
-      console.log('params', params)
-    });
-  }
 }
 
 dotenv.config();

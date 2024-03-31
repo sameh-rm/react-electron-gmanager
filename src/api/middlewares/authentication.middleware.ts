@@ -4,7 +4,6 @@ import apiConfig from "@api/utils/config/api_config";
 import { $Enums, User } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { Server } from "socket.io";
 
 export function loginRequiredMiddleware(role: $Enums.Role = $Enums.Role.USER) {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -32,19 +31,19 @@ export function loginRequiredMiddleware(role: $Enums.Role = $Enums.Role.USER) {
   };
 }
 
-export function wsAuthenticationMiddleware(io: Server) {
-  return io.use(async (socket, next) => {
-    try {
-      const token = socket.handshake.auth?.token || socket.handshake.headers?.token;
+// export function wsAuthenticationMiddleware(io: Server) {
+//   return io.use(async (socket, next) => {
+//     try {
+//       const token = socket.handshake.auth?.token || socket.handshake.headers?.token;
 
-      if (token == null) next(new UnAuthorizedException());
+//       if (token == null) next(new UnAuthorizedException());
 
-      jwt.verify(token, apiConfig.TOKEN_SECRET as string, (err: unknown) => {
-        if (err) next(new ForbiddenException());
-        next();
-      });
-    } catch (e) {
-      next(new Error("unauthorized"));
-    }
-  });
-}
+//       jwt.verify(token, apiConfig.TOKEN_SECRET as string, (err: unknown) => {
+//         if (err) next(new ForbiddenException());
+//         next();
+//       });
+//     } catch (e) {
+//       next(new Error("unauthorized"));
+//     }
+//   });
+// }
