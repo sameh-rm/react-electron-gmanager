@@ -1,37 +1,40 @@
-import apiConfig from "@api/utils/config/api_config";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import apiConfig from '@api/utils/config/api_config';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // Define a service using a base URL and expected endpoints
 export const workoutsApi = createApi({
-  reducerPath: "workoutsApi",
+  reducerPath: 'workoutsApi',
   baseQuery: fetchBaseQuery({ baseUrl: apiConfig.API_URL }),
   endpoints: (builder) => ({
     getWorkouts: builder.query<Workout[], void>({
-      query: () => `workouts/`,
+      query: () => `workouts/`
     }),
     getWorkoutByID: builder.query<Workout, number>({
-      query: (workoutId) => `workouts/${workoutId}`,
+      query: (workoutId) => `workouts/${workoutId}`
     }),
-    createWorkout: builder.mutation<Workout, Omit<Workout, "id">>({
+    createWorkout: builder.mutation<Workout, Omit<Workout, 'id'>>({
       query: (workout) => ({
         url: `workouts`,
-        method: "POST",
-        body: workout,
-      }),
+        method: 'POST',
+        body: workout
+      })
     }),
-    updateWorkout: builder.mutation<Workout, Partial<Workout> & Pick<Workout, "id">>({
+    updateWorkout: builder.mutation<
+      Workout,
+      Partial<Workout> & Pick<Workout, 'id'>
+    >({
       query: ({ id: workoutId, ...patch }) => ({
         url: `workouts/${workoutId}`,
-        method: "PUT",
-        body: patch,
-      }),
+        method: 'PUT',
+        body: patch
+      })
     }),
     deleteWorkout: builder.query<Workout, number>({
       query: (workoutId) => ({
         url: `workouts/${workoutId}`,
-        method: "DELETE",
-      }),
-    }),
-  }),
+        method: 'DELETE'
+      })
+    })
+  })
 });
 
 // Export hooks for usage in function components, which are
@@ -45,7 +48,7 @@ export const {
   useLazyDeleteWorkoutQuery,
   useLazyGetWorkoutByIDQuery,
   useLazyGetWorkoutsQuery,
-  usePrefetch,
+  usePrefetch
 } = workoutsApi;
 
 export default workoutsApi;

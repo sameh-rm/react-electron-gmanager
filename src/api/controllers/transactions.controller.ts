@@ -1,17 +1,17 @@
-import NotFoundException from "@api/exceptions/NotFoundException";
-import { IController } from "@api/interfaces/IController";
-import { TransactionPayload } from "@api/interfaces/ITransaction";
+import NotFoundException from '@api/exceptions/NotFoundException';
+import { IController } from '@api/interfaces/IController';
+import { TransactionPayload } from '@api/interfaces/ITransaction';
 
-import { loginRequiredMiddleware } from "@api/middlewares";
-import TransactionService from "@api/services/TransactionService";
-import { logger } from "@api/utils/logger";
-import TransactionValidators from "@api/validators/transaction.validator";
-import { Transaction } from "@prisma/client";
-import * as express from "express";
-import expressAsyncHandler from "express-async-handler";
+import { loginRequiredMiddleware } from '@api/middlewares';
+import TransactionService from '@api/services/TransactionService';
+import { logger } from '@api/utils/logger';
+import TransactionValidators from '@api/validators/transaction.validator';
+import { Transaction } from '@prisma/client';
+import * as express from 'express';
+import expressAsyncHandler from 'express-async-handler';
 
 class TransactionController implements IController<Transaction> {
-  public path = "/transactions";
+  public path = '/transactions';
   public router = express.Router();
   public dbService: TransactionService = new TransactionService();
   public validator: TransactionValidators = new TransactionValidators();
@@ -20,7 +20,11 @@ class TransactionController implements IController<Transaction> {
   }
 
   public intializeRoutes() {
-    this.router.get(this.path, loginRequiredMiddleware(), this.getAllTransactions);
+    this.router.get(
+      this.path,
+      loginRequiredMiddleware(),
+      this.getAllTransactions
+    );
 
     this.router.post(
       this.path,
@@ -61,12 +65,12 @@ class TransactionController implements IController<Transaction> {
   createTransaction = expressAsyncHandler(
     async (request: express.Request, response: express.Response) => {
       const payload: TransactionPayload = request.body;
-      logger.debug("createTransaction payload:", payload);
+      logger.debug('createTransaction payload:', payload);
       const user = await this.dbService.create({
         ...payload,
-        userId: request.user.id,
+        userId: request.user.id
       });
-      logger.debug("createTransaction user:", user);
+      logger.debug('createTransaction user:', user);
       response.json(user);
     }
   );
@@ -75,15 +79,15 @@ class TransactionController implements IController<Transaction> {
     async (request: express.Request, response: express.Response) => {
       const payload: TransactionPayload = request.body;
       const id: number = Number(request.params?.id);
-      logger.info("updateTransaction payload:", payload);
+      logger.info('updateTransaction payload:', payload);
       const object = await this.dbService.update(id, {
         ...payload,
-        userId: request.user.id,
+        userId: request.user.id
       });
       if (!object) {
         throw new NotFoundException();
       }
-      logger.debug("updateTransaction object:", object);
+      logger.debug('updateTransaction object:', object);
       response.json(object);
     }
   );
@@ -91,9 +95,9 @@ class TransactionController implements IController<Transaction> {
   getTransactionByID = expressAsyncHandler(
     async (request: express.Request, response: express.Response) => {
       const id: number = Number(request.params.id);
-      logger.debug("getTransactionByID param:", id);
+      logger.debug('getTransactionByID param:', id);
       const object = await this.dbService.getById(id);
-      logger.debug("getTransactionByID object:", object);
+      logger.debug('getTransactionByID object:', object);
       if (!object) {
         throw new NotFoundException();
       }
@@ -104,11 +108,11 @@ class TransactionController implements IController<Transaction> {
   deleteTransaction = expressAsyncHandler(
     async (request: express.Request, response: express.Response) => {
       const id: number = Number(request.params.id);
-      logger.debug("deleteTransactionByID param:", id);
+      logger.debug('deleteTransactionByID param:', id);
       const res = await this.dbService.remove(id).catch(() => {
         throw new NotFoundException();
       });
-      logger.debug("deleteTransactionByID res:", res);
+      logger.debug('deleteTransactionByID res:', res);
       response.json(res);
     }
   );

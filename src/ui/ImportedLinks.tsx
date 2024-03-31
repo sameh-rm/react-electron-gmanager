@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const ImportedLinks = () => {
   return (
@@ -14,7 +14,7 @@ const ImportedLinks = () => {
       <link
         rel="preconnect"
         href="https://fonts.gstatic.com"
-        crossOrigin={"use-credentials"}
+        crossOrigin={'use-credentials'}
       />
       <link
         rel="stylesheet"

@@ -1,25 +1,24 @@
 // eslint-disable-next-line import/namespace, import/default, import/no-named-as-default, import/no-named-as-default-member
-import helmet from "helmet";
-import express from "express";
-import * as dotenv from "dotenv";
-import validateEnv from "@api/utils/config/validateEnv";
-import cors from "cors";
-import bodyParser from "body-parser";
-import { IController } from "@api/interfaces/IController";
-import UserController from "@api/controllers/users.controller";
-import errorMiddleware from "@api/middlewares/error.middleware";
-import { loggingMiddleware } from "@api/middlewares/logger.middleware";
-import MemberController from "@api/controllers/members.controller";
-import PlanController from "@api/controllers/plans.controller";
-import WorkoutController from "@api/controllers/workouts.controller";
-import TransactionController from "@api/controllers/transactions.controller";
-import SubscriptionController from "@api/controllers/subscriptions.controller";
-import PermissionController from "@api/controllers/permissions.controller";
+import helmet from 'helmet';
+import express from 'express';
+import * as dotenv from 'dotenv';
+import validateEnv from '@api/utils/config/validateEnv';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { IController } from '@api/interfaces/IController';
+import UserController from '@api/controllers/users.controller';
+import errorMiddleware from '@api/middlewares/error.middleware';
+import { loggingMiddleware } from '@api/middlewares/logger.middleware';
+import MemberController from '@api/controllers/members.controller';
+import PlanController from '@api/controllers/plans.controller';
+import WorkoutController from '@api/controllers/workouts.controller';
+import TransactionController from '@api/controllers/transactions.controller';
+import SubscriptionController from '@api/controllers/subscriptions.controller';
+import PermissionController from '@api/controllers/permissions.controller';
 
 class App {
   private port: number;
   private app: express.Application;
-
 
   constructor(controllers: IController<unknown>[], port: number) {
     this.port = port;
@@ -43,7 +42,7 @@ class App {
 
   private initControllers(controllers: IController<unknown>[]) {
     controllers.forEach((controller) => {
-      this.app.use("/", controller.router);
+      this.app.use('/', controller.router);
     });
   }
 
@@ -52,7 +51,6 @@ class App {
       console.log(`App listening on port ${this.port}`);
     });
   }
-
 }
 
 dotenv.config();
@@ -67,7 +65,7 @@ const app = new App(
     new WorkoutController(),
     new TransactionController(),
     new SubscriptionController(),
-    new PermissionController(),
+    new PermissionController()
   ],
   port
 );

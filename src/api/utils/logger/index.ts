@@ -1,23 +1,23 @@
-import winston from "winston";
-import { randomBytes } from "crypto";
+import winston from 'winston';
+import { randomBytes } from 'crypto';
 // import formatHTTPLoggerResponse from "./httpForamatter";
-import apiConfig from "../config/api_config";
+import apiConfig from '../config/api_config';
 
 const appVersion = process.env.npm_package_version;
-const generateLogId = (): string => randomBytes(16).toString("hex");
+const generateLogId = (): string => randomBytes(16).toString('hex');
 
 const { combine, timestamp, json, printf } = winston.format;
-const timestampFormat = "MMM-DD-YYYY HH:mm:ss";
+const timestampFormat = 'MMM-DD-YYYY HH:mm:ss';
 
 winston.addColors({
-  error: "red",
-  warn: "yellow",
-  info: "cyan",
-  debug: "green",
+  error: 'red',
+  warn: 'yellow',
+  info: 'cyan',
+  debug: 'green'
 });
 
 export const logger = winston.createLogger({
-  level: apiConfig.NODE_ENV === "dev" ? "debug" : "error",
+  level: apiConfig.NODE_ENV === 'dev' ? 'debug' : 'error',
   format: combine(
     timestamp({ format: timestampFormat }),
     json(),
@@ -29,10 +29,10 @@ export const logger = winston.createLogger({
         appInfo: {
           appVersion,
           environment: process.env.NODE_ENV,
-          proccessId: process.pid,
+          proccessId: process.pid
         },
         message,
-        data,
+        data
       };
 
       // indenting logs for better readbility
@@ -40,6 +40,5 @@ export const logger = winston.createLogger({
     })
   ),
 
-  transports: [new winston.transports.Console()],
+  transports: [new winston.transports.Console()]
 });
-

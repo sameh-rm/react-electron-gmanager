@@ -1,1 +1,1 @@
-export { generateAccessToken, hashPassword, verifyPassword } from "./auth";
+export { generateAccessToken, hashPassword, verifyPassword } from './auth';

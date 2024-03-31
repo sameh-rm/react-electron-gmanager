@@ -1,1 +1,1 @@
-export { loginRequiredMiddleware } from "@api/middlewares/authentication.middleware";
+export { loginRequiredMiddleware } from '@api/middlewares/authentication.middleware';

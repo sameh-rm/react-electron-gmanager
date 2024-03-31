@@ -1,5 +1,5 @@
-import type { Router } from "express";
-import { IPrismaService } from "./IPrismaService";
+import type { Router } from 'express';
+import { IPrismaService } from './IPrismaService';
 
 export interface IController<Entity> {
   path: string;

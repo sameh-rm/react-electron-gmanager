@@ -1,10 +1,8 @@
-import Dashboard from '@ui/components/home-page/Dashboard.component'
-import React from 'react'
+import Dashboard from '@ui/components/home-page/Dashboard.component';
+import React from 'react';
 
 const Home = () => {
-  return (
-    <Dashboard/>
-  )
-}
+  return <Dashboard />;
+};
 
-export default Home
+export default Home;

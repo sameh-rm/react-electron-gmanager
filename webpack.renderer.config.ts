@@ -1,24 +1,24 @@
-import type { Configuration } from "webpack";
+import type { Configuration } from 'webpack';
 
-import { rules } from "./webpack.rules";
-import { plugins } from "./webpack.plugins";
-import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+import { rules } from './webpack.rules';
+import { plugins } from './webpack.plugins';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 rules.push({
   test: /\.css$/,
-  use: [{ loader: "style-loader" }, { loader: "css-loader" }],
+  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
 });
 
 export const rendererConfig: Configuration = {
   module: {
-    rules,
+    rules
   },
   plugins,
   resolve: {
-    extensions: [".js", ".ts", ".jsx", ".tsx", ".css"],
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
     plugins: [
       new TsconfigPathsPlugin({
         /* options: see below */
-      }),
-    ],
-  },
+      })
+    ]
+  }
 };

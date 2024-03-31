@@ -1,37 +1,43 @@
-import apiConfig from "@api/utils/config/api_config";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import apiConfig from '@api/utils/config/api_config';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // Define a service using a base URL and expected endpoints
 export const subscriptionsApi = createApi({
-  reducerPath: "subscriptionsApi",
+  reducerPath: 'subscriptionsApi',
   baseQuery: fetchBaseQuery({ baseUrl: apiConfig.API_URL }),
   endpoints: (builder) => ({
     getSubscriptions: builder.query<Subscription[], void>({
-      query: () => `subscriptions/`,
+      query: () => `subscriptions/`
     }),
     getSubscriptionByID: builder.query<Subscription, number>({
-      query: (subscriptionId) => `subscriptions/${subscriptionId}`,
+      query: (subscriptionId) => `subscriptions/${subscriptionId}`
     }),
-    createSubscription: builder.mutation<Subscription, Omit<Subscription, "id">>({
+    createSubscription: builder.mutation<
+      Subscription,
+      Omit<Subscription, 'id'>
+    >({
       query: (subscription) => ({
         url: `subscriptions`,
-        method: "POST",
-        body: subscription,
-      }),
+        method: 'POST',
+        body: subscription
+      })
     }),
-    updateSubscription: builder.mutation<Subscription, Partial<Subscription> & Pick<Subscription, "id">>({
+    updateSubscription: builder.mutation<
+      Subscription,
+      Partial<Subscription> & Pick<Subscription, 'id'>
+    >({
       query: ({ id: subscriptionId, ...patch }) => ({
         url: `subscriptions/${subscriptionId}`,
-        method: "PUT",
-        body: patch,
-      }),
+        method: 'PUT',
+        body: patch
+      })
     }),
     deleteSubscription: builder.query<Subscription, number>({
       query: (subscriptionId) => ({
         url: `subscriptions/${subscriptionId}`,
-        method: "DELETE",
-      }),
-    }),
-  }),
+        method: 'DELETE'
+      })
+    })
+  })
 });
 
 // Export hooks for usage in function components, which are
@@ -45,7 +51,7 @@ export const {
   useLazyDeleteSubscriptionQuery,
   useLazyGetSubscriptionByIDQuery,
   useLazyGetSubscriptionsQuery,
-  usePrefetch,
+  usePrefetch
 } = subscriptionsApi;
 
 export default subscriptionsApi;

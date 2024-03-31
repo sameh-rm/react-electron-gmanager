@@ -1,7 +1,7 @@
-import { IControllerValidator } from "@api/interfaces/IControllerValidator";
-import { $Enums } from "@prisma/client";
-import { z } from "zod";
-import { validateRequest } from "zod-express-middleware";
+import { IControllerValidator } from '@api/interfaces/IControllerValidator';
+import { $Enums } from '@prisma/client';
+import { z } from 'zod';
+import { validateRequest } from 'zod-express-middleware';
 
 class PlanValidators implements IControllerValidator {
   createValidator() {
@@ -14,16 +14,16 @@ class PlanValidators implements IControllerValidator {
         intervalType: z.enum([
           $Enums.IntervalType.DAILY,
           $Enums.IntervalType.MONTHLY,
-          $Enums.IntervalType.YEARLY,
+          $Enums.IntervalType.YEARLY
         ]),
-        planWorkouts: z.array(z.number()),
-      }),
+        planWorkouts: z.array(z.number())
+      })
     });
   }
   updateValidator() {
     return validateRequest({
       params: z.object({
-        id: z.string(),
+        id: z.string()
       }),
       body: z
         .object({
@@ -34,19 +34,19 @@ class PlanValidators implements IControllerValidator {
           intervalType: z.enum([
             $Enums.IntervalType.DAILY,
             $Enums.IntervalType.MONTHLY,
-            $Enums.IntervalType.YEARLY,
+            $Enums.IntervalType.YEARLY
           ]),
-          planWorkouts: z.array(z.number()),
+          planWorkouts: z.array(z.number())
         })
-        .partial(),
+        .partial()
     });
   }
 
   idParamValidator() {
     return validateRequest({
       params: z.object({
-        id: z.string(),
-      }),
+        id: z.string()
+      })
     });
   }
 
@@ -66,8 +66,8 @@ class PlanValidators implements IControllerValidator {
       query: z.object({
         search: z.string().optional(),
         from_date: z.date().optional(),
-        to_date: z.date().optional(),
-      }),
+        to_date: z.date().optional()
+      })
     });
   }
 }

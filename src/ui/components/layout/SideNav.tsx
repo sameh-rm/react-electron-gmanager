@@ -1,38 +1,38 @@
-import React from "react";
+import React from 'react';
 import {
   IconButton,
   Drawer as MuiDrawer,
   styled,
-  Toolbar,
-} from "@mui/material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { drawerWidth } from "./sharedConstants";
+  Toolbar
+} from '@mui/material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { drawerWidth } from './sharedConstants';
 
 const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== 'open'
 })(({ theme, open }) => ({
-  height:"100%",
-  "& .MuiDrawer-paper": {
-    position: "fixed",
-    whiteSpace: "nowrap",
+  height: '100%',
+  '& .MuiDrawer-paper': {
+    position: 'fixed',
+    whiteSpace: 'nowrap',
     width: drawerWidth,
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
+      duration: theme.transitions.duration.enteringScreen
     }),
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
     ...(!open && {
-      overflowX: "hidden",
-      transition: theme.transitions.create("width", {
+      overflowX: 'hidden',
+      transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+        duration: theme.transitions.duration.leavingScreen
       }),
       width: theme.spacing(7),
-      [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9),
-      },
-    }),
-  },
+      [theme.breakpoints.up('sm')]: {
+        width: theme.spacing(9)
+      }
+    })
+  }
 }));
 type SideNavContainerPropsType = {
   sideNavIsOpen: boolean;
@@ -40,16 +40,16 @@ type SideNavContainerPropsType = {
 };
 const SideNav = ({
   sideNavIsOpen,
-  toggleDrawer,
+  toggleDrawer
 }: SideNavContainerPropsType) => {
   return (
-    <Drawer anchor={"left"} open={sideNavIsOpen} variant="permanent">
+    <Drawer anchor={'left'} open={sideNavIsOpen} variant="permanent">
       <Toolbar
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          px: [1],
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          px: [1]
         }}
       >
         <IconButton onClick={toggleDrawer}>

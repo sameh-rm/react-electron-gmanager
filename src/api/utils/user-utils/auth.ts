@@ -1,7 +1,7 @@
-import type { User } from "@prisma/client";
-import { compare, hash } from "bcrypt";
-import { sign } from "jsonwebtoken";
-import apiConfig from "@api/utils/config/api_config";
+import type { User } from '@prisma/client';
+import { compare, hash } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
+import apiConfig from '@api/utils/config/api_config';
 
 export function generateAccessToken(user: User) {
   return sign(user, process.env.TOKEN_SECRET);
@@ -34,7 +34,7 @@ export async function verifyPassword(
       return res;
     })
     .catch((err) => {
-      console.error("matchPassword", err);
+      console.error('matchPassword', err);
       return false;
     });
 }

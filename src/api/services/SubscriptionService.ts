@@ -1,10 +1,10 @@
-import DBClient from "@api/db/dbClient";
+import DBClient from '@api/db/dbClient';
 import {
   ISubscriptionService,
-  SubscriptionPayload,
-} from "@api/interfaces/ISubscription";
-import { logger } from "@api/utils/logger";
-import { Subscription, Prisma, PrismaClient } from "@prisma/client";
+  SubscriptionPayload
+} from '@api/interfaces/ISubscription';
+import { logger } from '@api/utils/logger';
+import { Subscription, Prisma, PrismaClient } from '@prisma/client';
 
 class SubscriptionService implements ISubscriptionService<Subscription> {
   _prisma: PrismaClient;
@@ -27,8 +27,8 @@ class SubscriptionService implements ISubscriptionService<Subscription> {
     const object = await this.model
       .findUnique({
         where: {
-          id,
-        },
+          id
+        }
       })
       .catch((err) => {
         logger.error(err);
@@ -41,11 +41,11 @@ class SubscriptionService implements ISubscriptionService<Subscription> {
     await this.model
       .delete({
         where: {
-          id,
-        },
+          id
+        }
       })
       .then((res) => {
-        logger.info("Subscription", id, "Is Deleted", res);
+        logger.info('Subscription', id, 'Is Deleted', res);
       })
       .catch((err) => {
         logger.error(err);
@@ -56,7 +56,7 @@ class SubscriptionService implements ISubscriptionService<Subscription> {
   async create(data: SubscriptionPayload): Promise<Subscription> {
     const createdObject = await this.model
       .create({
-        data,
+        data
       })
       .catch((err) => {
         logger.error(err);
@@ -69,11 +69,11 @@ class SubscriptionService implements ISubscriptionService<Subscription> {
     const updatedObject = await this.model
       .update({
         where: {
-          id: id,
+          id: id
         },
         data: {
-          ...data,
-        },
+          ...data
+        }
       })
       .catch((err) => {
         logger.error(err);

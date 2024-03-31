@@ -6,24 +6,31 @@ info stands for model informations
   - information
   - image
   - debits if any
+
 ---
+
 - Subscription
   - member link
   - Transactions
   - info
+
 ---
+
 - Transaction
   - Subscription Link
   - Member Link
   - info
+
 ---
+
 - Plans
   - Subscriptions
   - Revenue
   - info
   - Members
 
->* not mandatory
+> - not mandatory
+
 - workouts
   - Subscriptions
   - Revenue

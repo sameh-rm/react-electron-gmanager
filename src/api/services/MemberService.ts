@@ -1,8 +1,8 @@
-import DBClient from "@api/db/dbClient";
-import { IMemberService, MemberPayload } from "@api/interfaces/IMember";
-import { SubscriptionWithTransactions } from "@api/interfaces/ISubscription";
-import { logger } from "@api/utils/logger";
-import { Member, Prisma, PrismaClient } from "@prisma/client";
+import DBClient from '@api/db/dbClient';
+import { IMemberService, MemberPayload } from '@api/interfaces/IMember';
+import { SubscriptionWithTransactions } from '@api/interfaces/ISubscription';
+import { logger } from '@api/utils/logger';
+import { Member, Prisma, PrismaClient } from '@prisma/client';
 
 class MemberService implements IMemberService<Member> {
   _prisma: PrismaClient;
@@ -13,7 +13,7 @@ class MemberService implements IMemberService<Member> {
 
     this._prisma.$use(async (params, next) => {
       // Manipulate params here
-      console.log("params", JSON.stringify(params, undefined, 4));
+      console.log('params', JSON.stringify(params, undefined, 4));
 
       const result = await next(params);
       // See results here
@@ -36,8 +36,8 @@ class MemberService implements IMemberService<Member> {
     return await this.model
       .findUnique({
         where: {
-          id,
-        },
+          id
+        }
       })
       .catch((err) => {
         logger.error(err);
@@ -50,19 +50,19 @@ class MemberService implements IMemberService<Member> {
     id: number,
     take: number
   ): Promise<SubscriptionWithTransactions[]> {
-    console.log("take", take);
+    console.log('take', take);
     return await this._prisma.subscription
       .findMany({
         where: {
-          memberId: id,
+          memberId: id
         },
         select: {
-          transactions: true,
+          transactions: true
         },
         orderBy: {
-          createdAt: "desc",
+          createdAt: 'desc'
         },
-        take,
+        take
       })
       .catch((err) => {
         logger.error(err);
@@ -77,11 +77,11 @@ class MemberService implements IMemberService<Member> {
     return await this._prisma.subscription
       .findMany({
         where: {
-          memberId: id,
+          memberId: id
         },
         orderBy: {
-          createdAt: "desc",
-        },
+          createdAt: 'desc'
+        }
       })
       .catch((err) => {
         logger.error(err);
@@ -97,13 +97,13 @@ class MemberService implements IMemberService<Member> {
     return await this._prisma.subscription
       .update({
         where: {
-          id,
+          id
         },
         data: {
           paid: {
-            increment: value,
-          },
-        },
+            increment: value
+          }
+        }
       })
       .catch((err) => {
         logger.error(err);
@@ -130,8 +130,8 @@ class MemberService implements IMemberService<Member> {
     return await this.model
       .findMany({
         where: {
-          fullName: { search: memberName.trim().replaceAll(" ", " | ") },
-        },
+          fullName: { search: memberName.trim().replaceAll(' ', ' | ') }
+        }
       })
       .catch((err) => {
         logger.error(err);
@@ -144,23 +144,23 @@ class MemberService implements IMemberService<Member> {
     await this.model
       .delete({
         where: {
-          id,
-        },
+          id
+        }
       })
       .catch((err) => {
         logger.error(err);
         return err;
       })
       .then((res) => {
-        logger.info("Member", id, "Is Deleted", res);
+        logger.info('Member', id, 'Is Deleted', res);
       });
   }
 
   async create(data: MemberPayload): Promise<Member> {
-    console.log("data", data);
+    console.log('data', data);
     return await this.model
       .create({
-        data,
+        data
       })
       .then((newMember) => {
         return newMember;
@@ -174,11 +174,11 @@ class MemberService implements IMemberService<Member> {
     return await this.model
       .update({
         where: {
-          id: id,
+          id: id
         },
         data: {
-          ...member,
-        },
+          ...member
+        }
       })
       .catch((err) => {
         logger.error(err);

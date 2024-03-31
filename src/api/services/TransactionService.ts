@@ -1,10 +1,10 @@
-import DBClient from "@api/db/dbClient";
+import DBClient from '@api/db/dbClient';
 import {
   ITransactionService,
-  TransactionPayload,
-} from "@api/interfaces/ITransaction";
-import { logger } from "@api/utils/logger";
-import { Transaction, Prisma, PrismaClient } from "@prisma/client";
+  TransactionPayload
+} from '@api/interfaces/ITransaction';
+import { logger } from '@api/utils/logger';
+import { Transaction, Prisma, PrismaClient } from '@prisma/client';
 
 class TransactionService implements ITransactionService<Transaction> {
   _prisma: PrismaClient;
@@ -27,8 +27,8 @@ class TransactionService implements ITransactionService<Transaction> {
     const object = await this.model
       .findUnique({
         where: {
-          id,
-        },
+          id
+        }
       })
       .catch((err) => {
         logger.error(err);
@@ -41,11 +41,11 @@ class TransactionService implements ITransactionService<Transaction> {
     await this.model
       .delete({
         where: {
-          id,
-        },
+          id
+        }
       })
       .then((res) => {
-        logger.info("Transaction", id, "Is Deleted", res);
+        logger.info('Transaction', id, 'Is Deleted', res);
       })
       .catch((err) => {
         logger.error(err);
@@ -56,7 +56,7 @@ class TransactionService implements ITransactionService<Transaction> {
   async create(data: TransactionPayload): Promise<Transaction> {
     const createdObject = await this.model
       .create({
-        data,
+        data
       })
       .catch((err) => {
         logger.error(err);
@@ -69,11 +69,11 @@ class TransactionService implements ITransactionService<Transaction> {
     const updatedObject = await this.model
       .update({
         where: {
-          id: id,
+          id: id
         },
         data: {
-          ...data,
-        },
+          ...data
+        }
       })
       .catch((err) => {
         logger.error(err);

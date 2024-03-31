@@ -1,19 +1,19 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient, User } from '@prisma/client';
 import {
   IUserService,
   UserPayload,
   UserRegisterPayload,
-  UserWithToken,
-} from "@api/interfaces/IUserService";
+  UserWithToken
+} from '@api/interfaces/IUserService';
 import {
   generateAccessToken,
   hashPassword,
-  verifyPassword,
-} from "@api/utils/user-utils";
-import { exclude } from "@api/utils/helpers";
-import WrongCredentialsException from "@api/exceptions/WrongCredentialsException";
-import ForbiddenException from "@api/exceptions/ForbiddenException";
-import DBClient from "@api/db/dbClient";
+  verifyPassword
+} from '@api/utils/user-utils';
+import { exclude } from '@api/utils/helpers';
+import WrongCredentialsException from '@api/exceptions/WrongCredentialsException';
+import ForbiddenException from '@api/exceptions/ForbiddenException';
+import DBClient from '@api/db/dbClient';
 
 class UserService implements IUserService<UserPayload> {
   _prisma: PrismaClient;
@@ -30,7 +30,7 @@ class UserService implements IUserService<UserPayload> {
     } else {
       throw new WrongCredentialsException();
     }
-    return { ...exclude(user, ["password"]), token };
+    return { ...exclude(user, ['password']), token };
   }
 
   async register(user: UserRegisterPayload): Promise<UserWithToken> {
@@ -41,10 +41,10 @@ class UserService implements IUserService<UserPayload> {
       confirmPassword,
       role,
       phone,
-      address,
+      address
     } = user;
     if (password !== confirmPassword) {
-      throw new WrongCredentialsException("Passwords does not match!");
+      throw new WrongCredentialsException('Passwords does not match!');
     }
     const createdUser = await this.create({
       fullName,
@@ -52,7 +52,7 @@ class UserService implements IUserService<UserPayload> {
       password: user.password,
       phone,
       address,
-      role: role,
+      role: role
     });
     return { ...createdUser, token: generateAccessToken(createdUser) };
   }
@@ -66,16 +66,16 @@ class UserService implements IUserService<UserPayload> {
     password = await hashPassword(password);
 
     if (password !== user.password)
-      throw new ForbiddenException("Old Password is Incorrect!");
+      throw new ForbiddenException('Old Password is Incorrect!');
 
     return await this._prisma.user
       .update({
         where: {
-          username: user.username,
+          username: user.username
         },
         data: {
-          password: await hashPassword(newPassword),
-        },
+          password: await hashPassword(newPassword)
+        }
       })
       .then((updatedUser) => (user = updatedUser));
   }
@@ -88,8 +88,8 @@ class UserService implements IUserService<UserPayload> {
     return await this._prisma.user
       .findUnique({
         where: {
-          id,
-        },
+          id
+        }
       })
       .then((data) => data);
   }
@@ -98,8 +98,8 @@ class UserService implements IUserService<UserPayload> {
     return await this._prisma.user
       .findUnique({
         where: {
-          username,
-        },
+          username
+        }
       })
       .then((data) => data);
   }
@@ -108,18 +108,18 @@ class UserService implements IUserService<UserPayload> {
     await this._prisma.user
       .delete({
         where: {
-          id,
-        },
+          id
+        }
       })
       .then((res) => {
-        console.log("User", id, "Is Deleted", res);
+        console.log('User', id, 'Is Deleted', res);
       });
   }
 
   async create(data: UserPayload): Promise<User> {
     return await this._prisma.user
       .create({
-        data,
+        data
       })
       .then((newUser) => {
         return newUser;
@@ -130,19 +130,18 @@ class UserService implements IUserService<UserPayload> {
   }
 
   async update(id: number, user: UserPayload): Promise<User> {
-    console.log({user})
+    console.log({ user });
     return await this._prisma.user
       .update({
         where: {
-          id: id,
+          id: id
         },
         data: {
-          ...user,
-        },
+          ...user
+        }
       })
       .then((res) => res);
   }
-
 }
 
 export default UserService;

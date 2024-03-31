@@ -1,10 +1,10 @@
-import type { Transaction } from "@prisma/client";
-import { IPrismaService } from "./IPrismaService";
+import type { Transaction } from '@prisma/client';
+import { IPrismaService } from './IPrismaService';
 
+export interface ITransactionService<Transaction>
+  extends IPrismaService<Transaction> {}
 
-
-export interface ITransactionService<Transaction> extends IPrismaService<Transaction> {
-
-}
-
-export type TransactionPayload = Omit<Transaction, "createdAt"| "updatedAt" | "id">
+export type TransactionPayload = Omit<
+  Transaction,
+  'createdAt' | 'updatedAt' | 'id'
+>;

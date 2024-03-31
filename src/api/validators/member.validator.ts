@@ -1,7 +1,7 @@
-import { IControllerValidator } from "@api/interfaces/IControllerValidator";
-import { $Enums } from "@prisma/client";
-import { z } from "zod";
-import { validateRequest } from "zod-express-middleware";
+import { IControllerValidator } from '@api/interfaces/IControllerValidator';
+import { $Enums } from '@prisma/client';
+import { z } from 'zod';
+import { validateRequest } from 'zod-express-middleware';
 
 class MemberValidators implements IControllerValidator {
   createValidator() {
@@ -12,14 +12,14 @@ class MemberValidators implements IControllerValidator {
         phone: z.string(),
         weight: z.number(),
         height: z.number(),
-        gender: z.enum([$Enums.Gender.MALE, $Enums.Gender.FEMALE]),
-      }),
+        gender: z.enum([$Enums.Gender.MALE, $Enums.Gender.FEMALE])
+      })
     });
   }
   updateValidator() {
     return validateRequest({
       params: z.object({
-        memberId: z.string(),
+        memberId: z.string()
       }),
       body: z.object({
         fullName: z.string().optional(),
@@ -27,26 +27,26 @@ class MemberValidators implements IControllerValidator {
         phone: z.string().optional(),
         weight: z.number().optional(),
         height: z.number().optional(),
-        gender: z.enum([$Enums.Gender.MALE, $Enums.Gender.FEMALE]).optional(),
-      }),
+        gender: z.enum([$Enums.Gender.MALE, $Enums.Gender.FEMALE]).optional()
+      })
     });
   }
 
   memberIdParamValidator() {
     return validateRequest({
       params: z.object({
-        memberId: z.string(),
-      }),
+        memberId: z.string()
+      })
     });
   }
 
   paySubscriptionValidator() {
     return validateRequest({
       params: z.object({
-        subscriptionId: z.string(),
+        subscriptionId: z.string()
       }),
-      body:z.object({
-        paidValue: z.number(),
+      body: z.object({
+        paidValue: z.number()
       })
     });
   }
@@ -56,8 +56,8 @@ class MemberValidators implements IControllerValidator {
       query: z.object({
         search: z.string().optional(),
         from_date: z.date().optional(),
-        to_date: z.date().optional(),
-      }),
+        to_date: z.date().optional()
+      })
     });
   }
 }

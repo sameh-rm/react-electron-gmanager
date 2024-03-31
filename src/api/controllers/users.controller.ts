@@ -1,20 +1,20 @@
-import NotFoundException from "@api/exceptions/NotFoundException";
-import { IController } from "@api/interfaces/IController";
+import NotFoundException from '@api/exceptions/NotFoundException';
+import { IController } from '@api/interfaces/IController';
 import {
   UserLoginPayload,
-  UserRegisterPayload,
-} from "@api/interfaces/IUserService";
-import { loginRequiredMiddleware } from "@api/middlewares";
-import UserService from "@api/services/UserService";
-import { exclude } from "@api/utils/helpers";
-import { logger } from "@api/utils/logger";
-import UserValidators from "@api/validators/user.validator";
-import { User } from "@prisma/client";
-import * as express from "express";
-import expressAsyncHandler from "express-async-handler";
+  UserRegisterPayload
+} from '@api/interfaces/IUserService';
+import { loginRequiredMiddleware } from '@api/middlewares';
+import UserService from '@api/services/UserService';
+import { exclude } from '@api/utils/helpers';
+import { logger } from '@api/utils/logger';
+import UserValidators from '@api/validators/user.validator';
+import { User } from '@prisma/client';
+import * as express from 'express';
+import expressAsyncHandler from 'express-async-handler';
 
 class UserController implements IController<User> {
-  public path = "/users";
+  public path = '/users';
   public router = express.Router();
   public dbService: UserService = new UserService();
   public validator: UserValidators = new UserValidators();
@@ -25,13 +25,13 @@ class UserController implements IController<User> {
   public intializeRoutes() {
     this.router.get(
       this.path,
-      loginRequiredMiddleware("ADMIN"),
+      loginRequiredMiddleware('ADMIN'),
       this.getAllUsers
     );
 
     this.router.post(
       this.path,
-      loginRequiredMiddleware("ADMIN"),
+      loginRequiredMiddleware('ADMIN'),
       this.validator.registerValidator(),
       this.createUser
     );
@@ -44,7 +44,7 @@ class UserController implements IController<User> {
 
     this.router.put(
       `${this.path}/:userId`,
-      loginRequiredMiddleware("ADMIN"),
+      loginRequiredMiddleware('ADMIN'),
       this.validator.updateValidator(),
       this.updateUser
     );
@@ -58,7 +58,7 @@ class UserController implements IController<User> {
 
     this.router.delete(
       `${this.path}/:userId`,
-      loginRequiredMiddleware("ADMIN"),
+      loginRequiredMiddleware('ADMIN'),
       this.validator.userIdParamValidator(),
       this.deleteUser
     );
@@ -92,9 +92,9 @@ class UserController implements IController<User> {
   createUser = expressAsyncHandler(
     async (request: express.Request, response: express.Response) => {
       const payload: UserRegisterPayload = request.body;
-      logger.debug("createUser payload:", payload);
+      logger.debug('createUser payload:', payload);
       const user = await this.dbService.register(payload);
-      logger.debug("createUser user:", user);
+      logger.debug('createUser user:', user);
       response.json(user);
     }
   );
@@ -103,14 +103,14 @@ class UserController implements IController<User> {
     async (request: express.Request, response: express.Response) => {
       const payload: UserRegisterPayload = request.body;
       const userId: number = Number(request.params?.userId);
-      logger.info("updateUser payload:", payload);
+      logger.info('updateUser payload:', payload);
       const user = exclude(await this.dbService.update(userId, payload), [
-        "password",
+        'password'
       ]);
       if (!user) {
         throw new NotFoundException();
       }
-      logger.debug("updateUser user:", user);
+      logger.debug('updateUser user:', user);
       response.json(user);
     }
   );
@@ -132,7 +132,7 @@ class UserController implements IController<User> {
       await this.dbService
         .changePassword(user, payload.oldPassword, payload.newPassword)
         .then(() => {
-          response.json({ message: "Password has changed!" });
+          response.json({ message: 'Password has changed!' });
         });
     }
   );
@@ -140,9 +140,9 @@ class UserController implements IController<User> {
   getUserByID = expressAsyncHandler(
     async (request: express.Request, response: express.Response) => {
       const userId: number = Number(request.params.userId);
-      logger.debug("getUserByID param:", userId);
+      logger.debug('getUserByID param:', userId);
       const user = await this.dbService.getById(userId);
-      logger.debug("getUserByID user:", user);
+      logger.debug('getUserByID user:', user);
       if (!user) {
         throw new NotFoundException();
       }
@@ -153,11 +153,11 @@ class UserController implements IController<User> {
   deleteUser = expressAsyncHandler(
     async (request: express.Request, response: express.Response) => {
       const userId: number = Number(request.params.userId);
-      logger.debug("deleteUserByID param:", userId);
+      logger.debug('deleteUserByID param:', userId);
       const res = await this.dbService.remove(userId).catch(() => {
         throw new NotFoundException();
       });
-      logger.debug("deleteUserByID res:", res);
+      logger.debug('deleteUserByID res:', res);
       response.json(res);
     }
   );

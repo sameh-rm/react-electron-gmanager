@@ -1,17 +1,17 @@
-import NotFoundException from "@api/exceptions/NotFoundException";
-import { IController } from "@api/interfaces/IController";
-import { PlanPayload } from "@api/interfaces/IPlan";
+import NotFoundException from '@api/exceptions/NotFoundException';
+import { IController } from '@api/interfaces/IController';
+import { PlanPayload } from '@api/interfaces/IPlan';
 
-import { loginRequiredMiddleware } from "@api/middlewares";
-import PlanService from "@api/services/PlanService";
-import { logger } from "@api/utils/logger";
-import PlanValidators from "@api/validators/plan.validator";
-import { Plan } from "@prisma/client";
-import * as express from "express";
-import expressAsyncHandler from "express-async-handler";
+import { loginRequiredMiddleware } from '@api/middlewares';
+import PlanService from '@api/services/PlanService';
+import { logger } from '@api/utils/logger';
+import PlanValidators from '@api/validators/plan.validator';
+import { Plan } from '@prisma/client';
+import * as express from 'express';
+import expressAsyncHandler from 'express-async-handler';
 
 class PlanController implements IController<Plan> {
-  public path = "/plans";
+  public path = '/plans';
   public router = express.Router();
   public dbService: PlanService = new PlanService();
   public validator: PlanValidators = new PlanValidators();
@@ -68,12 +68,12 @@ class PlanController implements IController<Plan> {
   createPlan = expressAsyncHandler(
     async (request: express.Request, response: express.Response) => {
       const payload: PlanPayload = request.body;
-      logger.debug("createPlan payload:", payload);
+      logger.debug('createPlan payload:', payload);
       const user = await this.dbService.create({
         ...payload,
-        userId: request.user.id,
+        userId: request.user.id
       });
-      logger.debug("createPlan user:", user);
+      logger.debug('createPlan user:', user);
       response.json(user);
     }
   );
@@ -82,15 +82,15 @@ class PlanController implements IController<Plan> {
     async (request: express.Request, response: express.Response) => {
       const payload: PlanPayload = request.body;
       const id: number = Number(request.params?.id);
-      logger.info("updatePlan payload:", payload);
+      logger.info('updatePlan payload:', payload);
       const object = await this.dbService.update(id, {
         ...payload,
-        userId: request.user.id,
+        userId: request.user.id
       });
       if (!object) {
         throw new NotFoundException();
       }
-      logger.debug("updatePlan object:", object);
+      logger.debug('updatePlan object:', object);
       response.json(object);
     }
   );
@@ -100,7 +100,7 @@ class PlanController implements IController<Plan> {
       const { workoutsIdList }: { workoutsIdList: number[] } = request.body;
       console.log({ workoutsIdList });
       const { id } = request.params;
-      logger.info("updatePlan workoutsIdList:", workoutsIdList);
+      logger.info('updatePlan workoutsIdList:', workoutsIdList);
       const list = workoutsIdList.map(
         async (workoutId) =>
           await this.dbService.addWorkoutToPlan(Number(id), workoutId)
@@ -117,9 +117,9 @@ class PlanController implements IController<Plan> {
   getPlanByID = expressAsyncHandler(
     async (request: express.Request, response: express.Response) => {
       const id: number = Number(request.params.id);
-      logger.debug("getPlanByID param:", id);
+      logger.debug('getPlanByID param:', id);
       const object = await this.dbService.getById(id);
-      logger.debug("getPlanByID object:", object);
+      logger.debug('getPlanByID object:', object);
       if (!object) {
         throw new NotFoundException();
       }
@@ -130,11 +130,11 @@ class PlanController implements IController<Plan> {
   deletePlan = expressAsyncHandler(
     async (request: express.Request, response: express.Response) => {
       const id: number = Number(request.params.id);
-      logger.debug("deletePlanByID param:", id);
+      logger.debug('deletePlanByID param:', id);
       const res = await this.dbService.remove(id).catch(() => {
         throw new NotFoundException();
       });
-      logger.debug("deletePlanByID res:", res);
+      logger.debug('deletePlanByID res:', res);
       response.json(res);
     }
   );

@@ -1,7 +1,7 @@
-import DBClient from "@api/db/dbClient";
-import { IPlanService, PlanPayload } from "@api/interfaces/IPlan";
-import { logger } from "@api/utils/logger";
-import { Plan, Prisma, PrismaClient, Workout } from "@prisma/client";
+import DBClient from '@api/db/dbClient';
+import { IPlanService, PlanPayload } from '@api/interfaces/IPlan';
+import { logger } from '@api/utils/logger';
+import { Plan, Prisma, PrismaClient, Workout } from '@prisma/client';
 
 class PlanService implements IPlanService<Plan> {
   _prisma: PrismaClient;
@@ -24,11 +24,11 @@ class PlanService implements IPlanService<Plan> {
     const plan = await this.model
       .findUnique({
         where: {
-          id,
+          id
         },
         include: {
-          workouts: true,
-        },
+          workouts: true
+        }
       })
       .catch((err) => {
         logger.error(err);
@@ -41,23 +41,23 @@ class PlanService implements IPlanService<Plan> {
     id: number,
     workoutId: number
   ): Promise<Plan & { workouts?: Workout[] }> {
-    console.log('id', id)
-    console.log('workoutId', workoutId)
+    console.log('id', id);
+    console.log('workoutId', workoutId);
     const plan = await this.model
       .update({
         data: {
           workouts: {
             connect: {
-              id: workoutId,
-            },
-          },
+              id: workoutId
+            }
+          }
         },
         where: {
-          id,
+          id
         },
         include: {
-          workouts: true,
-        },
+          workouts: true
+        }
       })
       .catch((err) => {
         logger.error(err);
@@ -70,22 +70,22 @@ class PlanService implements IPlanService<Plan> {
     await this.model
       .delete({
         where: {
-          id,
-        },
+          id
+        }
       })
       .catch((err) => {
         console.log(err);
         return err;
       })
       .then((res) => {
-        logger.info("Plan", id, "Is Deleted", res);
+        logger.info('Plan', id, 'Is Deleted', res);
       });
   }
 
   async create(data: PlanPayload): Promise<Plan> {
     const createdPlan = await this.model
       .create({
-        data,
+        data
       })
       .catch((err) => {
         console.log(err);
@@ -99,11 +99,11 @@ class PlanService implements IPlanService<Plan> {
     return await this.model
       .update({
         where: {
-          id: id,
+          id: id
         },
         data: {
-          ...plan,
-        },
+          ...plan
+        }
       })
       .catch((err) => {
         console.log(err);

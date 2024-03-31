@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 export interface IPrismaService<Entity> {
   _prisma: PrismaClient;
@@ -11,7 +11,7 @@ export interface IPrismaService<Entity> {
 
   create(data: Entity): Promise<Entity>;
 
-  update(id:number, data: Entity): Promise<Entity>;
+  update(id: number, data: Entity): Promise<Entity>;
 }
 
-export default IPrismaService
+export default IPrismaService;

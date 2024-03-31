@@ -1,4 +1,4 @@
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 type Config = {
@@ -16,6 +16,6 @@ const apiConfig: Config = {
   API_PORT: +process.env.API_PORT,
   HASH_SALT: +process.env.HASH_SALT,
   DATABASE_URL: process.env.DATABASE_URL,
-  TOKEN_SECRET: process.env.TOKEN_SECRET,
+  TOKEN_SECRET: process.env.TOKEN_SECRET
 };
 export default apiConfig;

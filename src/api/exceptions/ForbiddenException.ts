@@ -1,10 +1,9 @@
-import HttpException from "./HttpException";
+import HttpException from './HttpException';
 
- class ForbiddenException extends HttpException {
-  constructor(message="FORBIDDEN!") {
+class ForbiddenException extends HttpException {
+  constructor(message = 'FORBIDDEN!') {
     super(403, message);
   }
 }
 
-
-export default ForbiddenException
+export default ForbiddenException;

@@ -1,7 +1,7 @@
-import { IControllerValidator } from "@api/interfaces/IControllerValidator";
-import { $Enums } from "@prisma/client";
-import { z } from "zod";
-import { validateRequest } from "zod-express-middleware";
+import { IControllerValidator } from '@api/interfaces/IControllerValidator';
+import { $Enums } from '@prisma/client';
+import { z } from 'zod';
+import { validateRequest } from 'zod-express-middleware';
 class PermissionValidators implements IControllerValidator {
   createValidator() {
     return validateRequest({
@@ -13,25 +13,25 @@ class PermissionValidators implements IControllerValidator {
           $Enums.Models.Permission,
           $Enums.Models.Plan,
           $Enums.Models.Subscription,
-          $Enums.Models.Workout,  
+          $Enums.Models.Workout,
           $Enums.Models.User,
-          $Enums.Models.Transaction,
+          $Enums.Models.Transaction
         ]),
         operation: z.enum([
           $Enums.PermissionOperation.CAN_APPROVE,
           $Enums.PermissionOperation.CAN_CREATE,
           $Enums.PermissionOperation.CAN_READ_ALL,
           $Enums.PermissionOperation.CAN_REMOVE,
-          $Enums.PermissionOperation.CAN_UPDATE,
-        ]),
-      }),
+          $Enums.PermissionOperation.CAN_UPDATE
+        ])
+      })
     });
   }
 
   updateValidator() {
     return validateRequest({
       params: z.object({
-        id: z.string(),
+        id: z.string()
       }),
       body: z.object({
         title: z.string().optional(),
@@ -43,18 +43,18 @@ class PermissionValidators implements IControllerValidator {
             $Enums.PermissionOperation.CAN_CREATE,
             $Enums.PermissionOperation.CAN_READ_ALL,
             $Enums.PermissionOperation.CAN_REMOVE,
-            $Enums.PermissionOperation.CAN_UPDATE,
+            $Enums.PermissionOperation.CAN_UPDATE
           ])
-          .optional(),
-      }),
+          .optional()
+      })
     });
   }
 
   idParamValidator() {
     return validateRequest({
       params: z.object({
-        id: z.string(),
-      }),
+        id: z.string()
+      })
     });
   }
 

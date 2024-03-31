@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   AppBarProps,
   Badge,
@@ -6,29 +6,29 @@ import {
   AppBar as MuiAppBar,
   styled,
   Toolbar,
-  Typography,
-} from "@mui/material";
-import { drawerWidth } from "./sharedConstants";
-import MenuIcon from "@mui/icons-material/Menu";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+  Typography
+} from '@mui/material';
+import { drawerWidth } from './sharedConstants';
+import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== 'open'
 })<AppBarProps & { open: boolean }>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
+  transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.leavingScreen
   }),
-  
+
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
+      duration: theme.transitions.duration.enteringScreen
+    })
+  })
 }));
 
 type AppBarContainerPropsType = {
@@ -37,13 +37,13 @@ type AppBarContainerPropsType = {
 };
 const AppBarContainer = ({
   sideNavIsOpen,
-  toggleDrawer,
+  toggleDrawer
 }: AppBarContainerPropsType) => {
   return (
     <AppBar position="absolute" open={sideNavIsOpen}>
       <Toolbar
         sx={{
-          pr: "24px", // keep right padding when drawer closed
+          pr: '24px' // keep right padding when drawer closed
         }}
       >
         <IconButton
@@ -52,8 +52,8 @@ const AppBarContainer = ({
           aria-label="open drawer"
           onClick={toggleDrawer}
           sx={{
-            marginRight: "36px",
-            ...(sideNavIsOpen && { display: "none" }),
+            marginRight: '36px',
+            ...(sideNavIsOpen && { display: 'none' })
           }}
         >
           <MenuIcon />
